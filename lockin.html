@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LOCK IN</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      animation: flashBg 0.12s infinite alternate;
+    }
+
+    @keyframes flashBg {
+      from { background: black; }
+      to { background: darkred; }
+    }
+
+    .container {
+      text-align: center;
+      animation: shake 0.08s infinite;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 90px;
+      margin: 0;
+      text-shadow: 0 0 20px red, 0 0 40px red;
+    }
+
+    p {
+      font-size: 32px;
+      margin-top: 20px;
+      color: white;
+      text-shadow: 0 0 10px white;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(2px, 2px); }
+      25% { transform: translate(-2px, 2px); }
+      50% { transform: translate(2px, -2px); }
+      75% { transform: translate(-2px, -2px); }
+      100% { transform: translate(2px, 2px); }
+    }
+  </style>
+</head>
+<body onload="startScare()">
+  <div class="container">
+    <h1>🚨 LOCK IN 🚨</h1>
+    <p>GET OFF SOCIALS.</p>
+    <p>YOU SAID YOU WERE REVISING.</p>
+  </div>
+
+  <script>
+    function goFullScreen() {
+      const el = document.documentElement;
+      if (el.requestFullscreen) {
+        el.requestFullscreen().catch(() => {});
+      }
+    }
+
+    function beep(freq, duration, volume = 0.15) {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "square";
+      osc.frequency.value = freq;
+      gain.gain.value = volume;
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start();
+
+      setTimeout(() => {
+        osc.stop();
+        ctx.close();
+      }, duration);
+    }
+
+    function playScaryPattern() {
+      beep(900, 180);
+      setTimeout(() => beep(700, 180), 220);
+      setTimeout(() => beep(1100, 250), 460);
+      setTimeout(() => beep(600, 300), 760);
+    }
+
+    function startScare() {
+      goFullScreen();
+
+      // first blast
+      playScaryPattern();
+
+      // repeat a few times
+      setTimeout(playScaryPattern, 1400);
+      setTimeout(playScaryPattern, 2800);
+
+      // flashing tab title
+      setInterval(() => {
+        document.title = document.title === "LOCK IN" ? "NO TIKTOK" : "LOCK IN";
+      }, 400);
+    }
+  </script>
+</body>
+</html>
